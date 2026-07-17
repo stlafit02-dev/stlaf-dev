@@ -1,0 +1,43 @@
+# Visual Studio
+.vs/
+bin/
+obj/
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# Node
+node_modules/
+dist/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+
+# User files
+*.user
+*.suo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+
+# Build
+publish/
+
+# React
+stlaf.frontend/node_modules/
+stlaf.frontend/dist/
+
+# ASP.NET
+STLAF.API/bin/
+STLAF.API/obj/

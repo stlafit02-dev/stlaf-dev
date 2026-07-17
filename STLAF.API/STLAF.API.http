@@ -1,0 +1,6 @@
+@STLAF.API_HostAddress = http://localhost:5096
+
+GET {{STLAF.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
