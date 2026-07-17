@@ -1,3 +1,35 @@
+## Quick Start
+
+### Clone the repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/stlaf-helpdesk.git
+cd stlaf-helpdesk
+```
+
+### Backend
+
+```bash
+cd STLAF.API
+
+dotnet restore
+dotnet ef database update
+dotnet run
+```
+
+### Frontend
+
+```bash
+cd stlaf.frontend
+
+npm install
+npm run dev
+```
+
+Backend: http://localhost:5096
+
+Frontend: http://localhost:5173
+
 # STLAF Internal IT Ticketing System
 
 A full-stack Internal IT Helpdesk and Asset Management System built for STLAF.
