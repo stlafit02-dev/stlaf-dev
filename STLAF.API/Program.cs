@@ -11,6 +11,7 @@ using STLAF.API.Repositories;
 using STLAF.API.Services;
 using System.Text;
 using System.Text.Json.Serialization;
+try {
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -126,3 +127,16 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.ToString());
+
+    if (ex.InnerException != null)
+    {
+        Console.WriteLine("INNER:");
+        Console.WriteLine(ex.InnerException.ToString());
+    }
+
+    throw;
+}
