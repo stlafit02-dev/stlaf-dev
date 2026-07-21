@@ -73,57 +73,6 @@ namespace STLAF.API.Migrations
                     b.ToTable("Assets");
                 });
 
-            modelBuilder.Entity("STLAF.API.Models.Ticket", b =>
-                {
-                    b.Property<Guid>("TicketId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("AssignedTo")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Category")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("CompanyEmail")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("DateSubmitted")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Priority")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("TicketNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ViberNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("TicketId");
-
-                    b.HasIndex("AssignedTo");
-
-                    b.ToTable("Tickets");
-                });
-
             modelBuilder.Entity("STLAF.API.Models.TicketComment", b =>
                 {
                     b.Property<Guid>("CommentId")
@@ -237,6 +186,60 @@ namespace STLAF.API.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Ticket", b =>
+                {
+                    b.Property<Guid>("TicketId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("AssignedTo")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CompanyEmail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateSubmitted")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Department")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TicketNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ViberNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("TicketId");
+
+                    b.HasIndex("AssignedTo");
+
+                    b.ToTable("Tickets");
+                });
+
             modelBuilder.Entity("STLAF.API.Models.Asset", b =>
                 {
                     b.HasOne("STLAF.API.Models.User", "AssignedUser")
@@ -247,19 +250,9 @@ namespace STLAF.API.Migrations
                     b.Navigation("AssignedUser");
                 });
 
-            modelBuilder.Entity("STLAF.API.Models.Ticket", b =>
-                {
-                    b.HasOne("STLAF.API.Models.User", "AssignedUser")
-                        .WithMany("AssignedTickets")
-                        .HasForeignKey("AssignedTo")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("AssignedUser");
-                });
-
             modelBuilder.Entity("STLAF.API.Models.TicketComment", b =>
                 {
-                    b.HasOne("STLAF.API.Models.Ticket", "Ticket")
+                    b.HasOne("Ticket", "Ticket")
                         .WithMany()
                         .HasForeignKey("TicketId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -276,7 +269,7 @@ namespace STLAF.API.Migrations
 
             modelBuilder.Entity("STLAF.API.Models.TicketHistory", b =>
                 {
-                    b.HasOne("STLAF.API.Models.Ticket", "Ticket")
+                    b.HasOne("Ticket", "Ticket")
                         .WithMany()
                         .HasForeignKey("TicketId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -289,6 +282,16 @@ namespace STLAF.API.Migrations
                     b.Navigation("Ticket");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Ticket", b =>
+                {
+                    b.HasOne("STLAF.API.Models.User", "AssignedUser")
+                        .WithMany("AssignedTickets")
+                        .HasForeignKey("AssignedTo")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("AssignedUser");
                 });
 
             modelBuilder.Entity("STLAF.API.Models.User", b =>

@@ -1,5 +1,3 @@
-namespace STLAF.API.DTOs.Ticket;
-
 public class TicketDashboardDto
 {
     public int TotalTickets { get; set; }
@@ -9,6 +7,8 @@ public class TicketDashboardDto
     public int InProgressTickets { get; set; }
 
     public int OnHoldTickets { get; set; }
+
+    public int ResolvedTickets { get; set; }
 
     public int ClosedTickets { get; set; }
 

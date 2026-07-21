@@ -34,11 +34,26 @@ public class TicketService : ITicketService
         ticket.DateSubmitted = DateTime.UtcNow;
         ticket.UpdatedDate = DateTime.UtcNow;
 
-        // Temporary ticket number generation
+        // ticket number generation
         var year = DateTime.UtcNow.Year;
-        var nextNumber = await _context.Tickets.CountAsync() + 1;
 
-        ticket.TicketNumber = $"TKT-{year}-{nextNumber:D6}";
+        var lastTicket = await _context.Tickets
+            .Where(t => t.TicketNumber.StartsWith($"TKT-{year}"))
+            .OrderByDescending(t => t.TicketNumber)
+            .FirstOrDefaultAsync();
+
+        var nextNumber = 1;
+
+        if (lastTicket != null)
+        {
+            var lastNumber = lastTicket.TicketNumber
+                .Split('-')
+                .Last();
+
+            nextNumber = int.Parse(lastNumber) + 1;
+        }
+
+        ticket.TicketNumber = $"TKT-{year}-{nextNumber:D2}";
 
         _context.Tickets.Add(ticket);
 
@@ -137,6 +152,10 @@ public class TicketService : ITicketService
         if (ticket == null)
             throw new Exception("Ticket not found.");
 
+        // Prevent editing closed tickets
+        if (ticket.Status == TicketStatus.Closed)
+            throw new Exception("This ticket has already been closed and cannot be edited.");
+
         ticket.Status = dto.Status;
         ticket.AssignedTo = dto.AssignedTo;
         ticket.UpdatedDate = DateTime.UtcNow;
@@ -182,26 +201,21 @@ public class TicketService : ITicketService
         {
             TotalTickets = await _context.Tickets.CountAsync(),
 
-            OpenTickets = await _context.Tickets
-                .CountAsync(t => t.Status == TicketStatus.Open),
+            OpenTickets = await _context.Tickets.CountAsync(t => t.Status == TicketStatus.Open),
 
-            InProgressTickets = await _context.Tickets
-                .CountAsync(t => t.Status == TicketStatus.InProgress),
+            InProgressTickets = await _context.Tickets.CountAsync(t => t.Status == TicketStatus.InProgress),
 
-            OnHoldTickets = await _context.Tickets
-                .CountAsync(t => t.Status == TicketStatus.OnHold),
+            OnHoldTickets = await _context.Tickets.CountAsync(t => t.Status == TicketStatus.OnHold),
 
-            ClosedTickets = await _context.Tickets
-                .CountAsync(t => t.Status == TicketStatus.Closed),
+            ResolvedTickets = await _context.Tickets.CountAsync(t => t.Status == TicketStatus.Resolved),
 
-            UrgentTickets = await _context.Tickets
-                .CountAsync(t => t.Priority == TicketPriority.Urgent),
+            ClosedTickets = await _context.Tickets.CountAsync(t => t.Status == TicketStatus.Closed),
 
-            MediumTickets = await _context.Tickets
-                .CountAsync(t => t.Priority == TicketPriority.Medium),
+            UrgentTickets = await _context.Tickets.CountAsync(t => t.Priority == TicketPriority.Urgent),
 
-            LowTickets = await _context.Tickets
-                .CountAsync(t => t.Priority == TicketPriority.Low)
+            MediumTickets = await _context.Tickets.CountAsync(t => t.Priority == TicketPriority.Medium),
+
+            LowTickets = await _context.Tickets.CountAsync(t => t.Priority == TicketPriority.Low)
         };
     }
     public ICollection<TicketHistory> Histories { get; set; }
@@ -250,5 +264,20 @@ public class TicketService : ITicketService
             .ToListAsync();
 
         return _mapper.Map<List<TicketCommentDto>>(comments);
+    }
+    public async Task<List<PublicTicketDto>> GetPublicTicketsAsync()
+    {
+        return await _context.Tickets
+            .OrderByDescending(t => t.DateSubmitted)
+            .Select(t => new PublicTicketDto
+            {
+                TicketNumber = t.TicketNumber,
+                Department = t.Department.ToString(),
+                Description = t.Description,
+                Status = t.Status.ToString(),
+                Priority = t.Priority.ToString(),
+                DateSubmitted = t.DateSubmitted
+            })
+            .ToListAsync();
     }
 }

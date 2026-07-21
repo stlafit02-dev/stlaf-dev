@@ -13,6 +13,7 @@ public class TicketDto
     public string CompanyEmail { get; set; } = string.Empty;
 
     public string ViberNumber { get; set; } = string.Empty;
+    public string Department { get; set; } = string.Empty;
 
     public string Description { get; set; } = string.Empty;
 

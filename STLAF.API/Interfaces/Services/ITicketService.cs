@@ -21,4 +21,5 @@ public interface ITicketService
     Task<List<TicketHistoryDto>> GetHistoryAsync(Guid ticketId);
     Task<TicketCommentDto> AddCommentAsync(Guid ticketId, CreateCommentDto dto);
     Task<List<TicketCommentDto>> GetCommentsAsync(Guid ticketId);
+    Task<List<PublicTicketDto>> GetPublicTicketsAsync();
 }

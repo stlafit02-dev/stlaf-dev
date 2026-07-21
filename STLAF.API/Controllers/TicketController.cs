@@ -31,7 +31,17 @@ public class TicketController : ControllerBase
         "Ticket created successfully.",
         ticket));
     }
+    [AllowAnonymous]
+    [HttpGet("public")]
+    public async Task<IActionResult> GetPublicTickets()
+    {
+        var tickets = await _ticketService.GetPublicTicketsAsync();
 
+        return Ok(new ApiResponse<List<PublicTicketDto>>(
+            true,
+            "Public tickets retrieved successfully.",
+            tickets));
+    }
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] TicketQueryDto query)
@@ -97,16 +107,16 @@ public class TicketController : ControllerBase
     "Ticket deleted successfully.",
     null));
     }
-    [Authorize]
+    [AllowAnonymous]
     [HttpGet("dashboard")]
     public async Task<IActionResult> Dashboard()
     {
         var dashboard = await _ticketService.GetDashboardAsync();
 
         return Ok(new ApiResponse<TicketDashboardDto>(
-    true,
-    "Dashboard loaded successfully.",
-    dashboard));
+            true,
+            "Dashboard loaded successfully.",
+            dashboard));
     }
     [Authorize]
     [HttpGet("{id:guid}/history")]

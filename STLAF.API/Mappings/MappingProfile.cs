@@ -1,8 +1,8 @@
 using AutoMapper;
-using STLAF.API.DTOs.Asset;
 using STLAF.API.DTOs.Ticket;
 using STLAF.API.DTOs.User;
 using STLAF.API.Models;
+using STLAF.API.Enums;
 
 namespace STLAF.API.Mappings;
 
@@ -10,26 +10,13 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        // Ticket
         CreateMap<CreateTicketDto, Ticket>();
+        CreateMap<User, UserDto>();
 
         CreateMap<Ticket, TicketDto>()
-        .ForMember(
-            dest => dest.AssignedToId,
-            opt => opt.MapFrom(src => src.AssignedTo)
-        )
-        .ForMember(
-            dest => dest.AssignedTo,
-            opt => opt.MapFrom(src =>
-                src.AssignedUser != null
-                    ? $"{src.AssignedUser.FirstName} {src.AssignedUser.LastName}"
-                    : null
-            ));
-
-        // Asset
-        CreateMap<CreateAssetDto, Asset>();
-
-        CreateMap<Asset, AssetDto>()
+            .ForMember(
+                dest => dest.Department,
+                opt => opt.MapFrom(src => GetDepartmentName(src.Department)))
             .ForMember(
                 dest => dest.AssignedTo,
                 opt => opt.MapFrom(src =>
@@ -37,19 +24,29 @@ public class MappingProfile : Profile
                         ? $"{src.AssignedUser.FirstName} {src.AssignedUser.LastName}"
                         : null));
 
-        // User
-        CreateMap<User, UserDto>();
-        CreateMap<TicketComment, TicketCommentDto>();
-        CreateMap<CreateCommentDto, TicketComment>();
-        //TicketHistory
-        CreateMap<TicketHistory, TicketHistoryDto>()
+        CreateMap<Ticket, PublicTicketDto>()
             .ForMember(
-                dest => dest.PerformedBy,
-                opt => opt.MapFrom(src =>
-                    src.User != null
-                        ? $"{src.User.FirstName} {src.User.LastName}"
-                        : "System"));
+                dest => dest.Department,
+                opt => opt.MapFrom(src => GetDepartmentName(src.Department)))
+            .ForMember(
+                dest => dest.Status,
+                opt => opt.MapFrom(src => src.Status.ToString()))
+            .ForMember(
+                dest => dest.Priority,
+                opt => opt.MapFrom(src => src.Priority.ToString()));
     }
 
-
+    private static string GetDepartmentName(Department department)
+    {
+        return department switch
+        {
+            Department.HumanResources => "Human Resource Department",
+            Department.Litigation => "Litigation Department",
+            Department.Corporate => "Corporate Department",
+            Department.Accounting => "Accounting Department",
+            Department.Marketing => "Marketing Department",
+            Department.IT => "IT Department",
+            _ => department.ToString()
+        };
+    }
 }

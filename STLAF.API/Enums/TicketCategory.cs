@@ -7,8 +7,5 @@ public enum TicketCategory
     Network = 3,
     Printer = 4,
     Email = 5,
-    CCTV = 6,
-    Telephone = 7,
-    AccountAccess = 8,
-    Other = 9
+    CCTV = 6
 }

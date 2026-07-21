@@ -1,11 +1,10 @@
 using STLAF.API.Enums;
-
-namespace STLAF.API.Models;
-
+using STLAF.API.Models;
 public class Ticket
 {
     public Guid TicketId { get; set; }
-    public string TicketNumber { get; set; } = "string.Empty";
+
+    public string TicketNumber { get; set; } = string.Empty;
 
     public string Name { get; set; } = string.Empty;
 
@@ -20,6 +19,8 @@ public class Ticket
     public TicketPriority Priority { get; set; }
 
     public TicketStatus Status { get; set; } = TicketStatus.Open;
+
+    public Department Department { get; set; }
 
     public Guid? AssignedTo { get; set; }
 

@@ -12,23 +12,25 @@ using STLAF.API.Repositories;
 using STLAF.API.Middleware;
 using System.Text.Json.Serialization;
 
+DotNetEnv.Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
 // Mapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITicketService, TicketService>();
-
-builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Add Controllers
 builder.Services.AddControllers();
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Frontend", policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173")
+            .WithOrigins(allowedOrigins)
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -77,13 +79,6 @@ builder.Services
 // Authorization
 builder.Services.AddAuthorization();
 
-//Service
-builder.Services.AddScoped<IAuthService, AuthService>();
-
-// Ticket
-builder.Services.AddScoped<ITicketService, TicketService>();
-builder.Services.AddScoped<IUserService, UserService>();
-
 builder.Services
     .AddControllers()
     .AddJsonOptions(options =>
@@ -110,6 +105,7 @@ using (var scope = app.Services.CreateScope())
     var context = scope.ServiceProvider
         .GetRequiredService<ApplicationDbContext>();
 
+    await context.Database.MigrateAsync();
     await DbInitializer.SeedAsync(context);
 }
 

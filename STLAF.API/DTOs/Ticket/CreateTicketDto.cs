@@ -7,17 +7,26 @@ public class CreateTicketDto
 {
     [Required]
     [MaxLength(100)]
-    public string Name { get; set;} = string.Empty;
+    public string Name { get; set; } = string.Empty;
+
     [Required]
     [EmailAddress]
     public string CompanyEmail { get; set; } = string.Empty;
+
     [Required]
     [Phone]
-    public string ViberNumber { get; set;} = string.Empty;
+    public string ViberNumber { get; set; } = string.Empty;
+
+    [Required]
+    public Department Department { get; set; }
+
+    [Required]
     public TicketCategory Category { get; set; }
+
     [Required]
     [MaxLength(1000)]
-    public string Description { get; set;} = string.Empty;
+    public string Description { get; set; } = string.Empty;
+
     [Required]
     public TicketPriority Priority { get; set; }
 }
