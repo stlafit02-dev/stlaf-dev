@@ -1,0 +1,33 @@
+# Build output
+bin/
+obj/
+
+# Visual Studio
+.vs/
+
+# Git
+.git/
+.gitignore
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# Environment files (do not copy secrets)
+.env
+.env.*
+
+# Test results
+TestResults/
+
+# Node files (if accidentally inside backend)
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
