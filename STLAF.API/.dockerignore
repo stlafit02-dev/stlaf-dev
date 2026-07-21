@@ -1,32 +1,32 @@
-# Build output
-bin/
-obj/
+# Build & Output Directories (Catch root and nested subfolders)
+**/bin/
+**/obj/
+**/out/
+**/publish/
 
-# Visual Studio
+# Visual Studio & IDE
 .vs/
-
-# Git
-.git/
-.gitignore
-
-# User-specific files
+.idea/
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
 
-# Logs
-*.log
+# Git
+.git/
+.gitignore
 
-# Environment files (do not copy secrets)
+# Environment files & Secrets
 .env
 .env.*
+*.env
 
-# Test results
-TestResults/
+# Logs & Test Results
+*.log
+**/TestResults/
 
-# Node files (if accidentally inside backend)
-node_modules/
+# Node files
+**/node_modules/
 
 # OS files
 .DS_Store
