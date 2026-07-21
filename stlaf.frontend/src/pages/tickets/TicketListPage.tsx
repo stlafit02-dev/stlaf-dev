@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Typography } from "@mui/material";
-import type { GridPaginationModel } from "@mui/x-data-grid";
+import { Box, Typography } from "@mui/material";
 
 import TicketToolbar from "../../components/tickets/TicketToolbar";
 import TicketTable from "../../components/tickets/TicketTable";
-import { useTickets } from "../../hooks/useTickets";
 import TicketDetailsDialog from "../../components/tickets/TicketDetailsDialog";
+
+import { useTickets } from "../../hooks/useTickets";
 import type { TicketDto } from "../../types/ticket";
 
 export default function TicketListPage() {
@@ -13,10 +13,14 @@ export default function TicketListPage() {
   const [status, setStatus] = useState("");
   const [priority, setPriority] = useState("");
 
-  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
+  const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 10,
   });
+
+  const [selectedTicket, setSelectedTicket] = useState<TicketDto | null>(null);
+
+  const [openDialog, setOpenDialog] = useState(false);
 
   const { data, isLoading } = useTickets({
     page: paginationModel.page + 1,
@@ -27,28 +31,47 @@ export default function TicketListPage() {
     sortBy: "DateSubmitted",
     descending: true,
   });
-  console.log("Ticket query running...");
-  console.log(data);
-  console.log(isLoading);
-
-  const [selectedTicket, setSelectedTicket] = useState<TicketDto | null>(null);
-
-  const [openDialog, setOpenDialog] = useState(false);
 
   return (
-    <>
-      <Typography variant="h4" fontWeight={700} mb={3}>
-        Tickets
-      </Typography>
+    <Box
+      sx={{
+        width: "100%",
+        maxWidth: "1700px",
+        mx: "auto",
+        px: 4,
+        py: 3,
+      }}
+    >
+      {/* Header */}
+      <Box
+        sx={{
+          mb: 3,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: 2,
+        }}
+      >
+        <Typography
+          sx={{
+            fontSize: 40,
+            fontWeight: 700,
+            color: "#123765",
+          }}
+        >
+          Tickets
+        </Typography>
 
-      <TicketToolbar
-        search={search}
-        status={status}
-        priority={priority}
-        onSearchChange={setSearch}
-        onStatusChange={setStatus}
-        onPriorityChange={setPriority}
-      />
+        <TicketToolbar
+          search={search}
+          status={status}
+          priority={priority}
+          onSearchChange={setSearch}
+          onStatusChange={setStatus}
+          onPriorityChange={setPriority}
+        />
+      </Box>
 
       <TicketTable
         tickets={data?.data ?? []}
@@ -61,11 +84,12 @@ export default function TicketListPage() {
           setOpenDialog(true);
         }}
       />
+
       <TicketDetailsDialog
         open={openDialog}
         ticket={selectedTicket}
         onClose={() => setOpenDialog(false)}
       />
-    </>
+    </Box>
   );
 }

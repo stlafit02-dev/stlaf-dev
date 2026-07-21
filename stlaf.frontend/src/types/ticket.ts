@@ -13,6 +13,15 @@ export interface TicketDto {
   dateSubmitted: string;
 }
 
+export interface PublicTicketDto {
+  ticketNumber: string;
+  dateSubmitted: string;
+  department: string;
+  description: string;
+  status: string;
+  priority: string;
+}
+
 export interface PaginatedResult<T> {
   data: T[];
   totalRecords: number;
