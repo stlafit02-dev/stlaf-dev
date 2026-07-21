@@ -3,27 +3,47 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using STLAF.API.Configurations;
 using STLAF.API.Data;
-using STLAF.API.Interfaces.Services;
-using System.Text;
-using STLAF.API.Services;
-using STLAF.API.Mappings;
 using STLAF.API.Interfaces.Repositories;
-using STLAF.API.Repositories;
+using STLAF.API.Interfaces.Services;
+using STLAF.API.Mappings;
 using STLAF.API.Middleware;
+using STLAF.API.Repositories;
+using STLAF.API.Services;
+using System.Text;
 using System.Text.Json.Serialization;
 
-DotNetEnv.Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
-// Mapper
+// Load .env only during local development
+if (builder.Environment.IsDevelopment())
+{
+    DotNetEnv.Env.Load();
+}
+
+// AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+// Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITicketService, TicketService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
-// Add Controllers
-builder.Services.AddControllers();
-var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+// Repositories
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+
+// Controllers
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(
+            new JsonStringEnumConverter());
+    });
+
+// CORS
+var allowedOrigins = builder.Configuration
+    .GetSection("AllowedOrigins")
+    .Get<string[]>() ?? Array.Empty<string>();
 
 builder.Services.AddCors(options =>
 {
@@ -40,9 +60,6 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Repo
-builder.Services.AddScoped<ITicketRepository, TicketRepository>();
-
 // Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -50,13 +67,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-// JWT Settings
+// JWT
 builder.Services.Configure<JwtSettings>(
     builder.Configuration.GetSection("Jwt"));
 
 var jwt = builder.Configuration.GetSection("Jwt");
 
-// Authentication
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -76,30 +92,21 @@ builder.Services
         };
     });
 
-// Authorization
 builder.Services.AddAuthorization();
 
-builder.Services
-    .AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(
-            new JsonStringEnumConverter()
-        );
-    });
-
 var app = builder.Build();
-// middleware
+
+// Global Exception Middleware
 app.UseMiddleware<ExceptionMiddleware>();
 
-// swagger
+// Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// Seeder
+// Database Migration & Seed
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider
@@ -110,13 +117,12 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseHttpsRedirection();
+
 app.UseCors("Frontend");
 
-// Authentication & Authorization
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Map Controllers
 app.MapControllers();
 
 app.Run();
