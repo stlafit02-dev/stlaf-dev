@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "https://stlaf-api-qlu3.onrender.com/api",
+    baseURL: import.meta.env.VITE_API_URL || "https://stlaf-api-qlu3.onrender.com/api" || "http://http://localhost:5173/",
     headers: {
         "Content-Type": "application/json"
     }
