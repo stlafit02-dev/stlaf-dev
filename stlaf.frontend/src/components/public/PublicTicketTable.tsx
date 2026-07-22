@@ -218,7 +218,7 @@ export default function PublicTicketTable() {
         </Table>
       </TableContainer>
 
-      {/* <TablePagination
+      <TablePagination
         component="div"
         count={data.length}
         page={page}
@@ -226,7 +226,7 @@ export default function PublicTicketTable() {
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
         rowsPerPageOptions={[30, 50, 100]}
-      /> */}
+      />
     </>
   );
 }
