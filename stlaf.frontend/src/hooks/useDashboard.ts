@@ -5,5 +5,6 @@ export function useDashboard() {
   return useQuery({
     queryKey: ["dashboard"],
     queryFn: getDashboard,
+    refetchInterval: 5000, 
   });
 }

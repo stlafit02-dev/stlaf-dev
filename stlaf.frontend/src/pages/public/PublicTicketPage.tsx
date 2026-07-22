@@ -136,6 +136,7 @@ export default function PublicTicketPage() {
                         lineHeight: 1,
                       }}
                     >
+                      {/* 3. The value will seamlessly jump to the new number when the background fetch completes */}
                       {isLoading ? "-" : card.value}
                     </Typography>
                   </Box>

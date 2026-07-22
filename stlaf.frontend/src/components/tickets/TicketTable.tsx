@@ -91,22 +91,28 @@ export default function TicketTable({
       sortable: false,
       renderCell: ({ value }) => {
         const styles: Record<string, any> = {
-          Urgent: {
-            bgcolor: "#FEE2E2",
-            color: "#DC2626",
+          Low: {
+            bgcolor: "#DCFCE7",
+            color: "#166534",
+          },
+          Medium: {
+            bgcolor: "#FEF3C7",
+            color: "#92400E",
           },
           High: {
             bgcolor: "#FFF7ED",
-            color: "#EA580C",
+            color: "#C2410C",
           },
-          Medium: {
-            bgcolor: "#EEF2FF",
-            color: "#4338CA",
+          Urgent: {
+            bgcolor: "#FEE2E2",
+            color: "#B91C1C",
           },
-          Low: {
-            bgcolor: "#F1F5F9",
-            color: "#475569",
-          },
+        };
+
+        // Fallback style if value is missing/unmatched
+        const activeStyle = styles[value] || {
+          bgcolor: "#F1F5F9",
+          color: "#475569",
         };
 
         return (
@@ -118,7 +124,7 @@ export default function TicketTable({
               fontWeight: 600,
               fontSize: 11,
               borderRadius: 2,
-              ...styles[value],
+              ...activeStyle,
             }}
           />
         );
@@ -151,17 +157,23 @@ export default function TicketTable({
             color: "#15803D",
           },
           Closed: {
-            bgcolor: "#F1F5F9",
-            color: "#475569",
+            bgcolor: "#E2E8F0",
+            color: "#64748B",
           },
+        };
+
+        // Fallback style if value is missing/unmatched
+        const activeStyle = styles[value] || {
+          bgcolor: "#F1F5F9",
+          color: "#475569",
         };
 
         const displayStatus =
           value === "InProgress"
             ? "In Progress"
             : value === "OnHold"
-            ? "On Hold"
-            : value;
+              ? "On Hold"
+              : value;
 
         return (
           <Chip
@@ -172,7 +184,7 @@ export default function TicketTable({
               fontWeight: 600,
               fontSize: 11,
               borderRadius: 2,
-              ...styles[value],
+              ...activeStyle,
             }}
           />
         );
