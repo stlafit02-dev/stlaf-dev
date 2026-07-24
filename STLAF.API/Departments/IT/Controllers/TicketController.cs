@@ -4,7 +4,7 @@ using STLAF.API.DTOs.Ticket;
 using STLAF.API.Interfaces.Services;
 using STLAF.API.Common;
 
-namespace STLAF.API.Controllers;
+namespace STLAF.API.Departments.IT.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
