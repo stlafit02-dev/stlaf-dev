@@ -1,3 +1,4 @@
+using STLAF.API.Enums;
 namespace STLAF.API.Models;
 
 public class User
@@ -8,6 +9,7 @@ public class User
     public string Email { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = string.Empty;
     public string Department { get; set; } = string.Empty;
+    public UserRole Role { get; set; } = UserRole.User;
 
     public bool IsActive { get; set; } = true;
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
