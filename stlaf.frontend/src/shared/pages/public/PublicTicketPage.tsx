@@ -3,7 +3,8 @@ import { Box, Grid, Paper, Typography, Chip, Stack } from "@mui/material";
 import PublicTicketForm from "../../components/public/PublicTicketForm";
 import PublicTicketTable from "../../components/public/PublicTicketTable";
 import { useDashboard } from "../../hooks/useDashboard";
-import logo from "../../assets/stlaf.png";
+
+import logo from "../../../assets/stlaf.png";
 
 export default function PublicTicketPage() {
   const { data, isLoading } = useDashboard();
@@ -46,44 +47,70 @@ export default function PublicTicketPage() {
       sx={{
         minHeight: "100vh",
         bgcolor: "#EEF3F8",
-        p: {
+        py: 4,
+        px: {
           xs: 2,
-          md: 4,
+          sm: 3,
+          lg: 4,
         },
       }}
     >
       <Box
         sx={{
-          maxWidth: 1700,
+          width: "100%",
+          maxWidth: 1450,
           mx: "auto",
         }}
       >
         {/* Header */}
-        <Stack direction="row" alignItems="center" spacing={2} mb={3}>
+
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={2}
+          alignItems="center"
+          mb={4}
+        >
           <Box
             component="img"
             src={logo}
-            alt="STLAF IT Helpdesk"
+            alt="STLAF"
             sx={{
-              width: 180,
+              width: {
+                xs: 130,
+                sm: 160,
+                md: 180,
+              },
               height: "auto",
-              objectFit: "contain",
             }}
           />
 
-          <Stack>
-            <Typography variant="h3" fontWeight={600}>
+          <Stack
+            spacing={0.5}
+            textAlign={{
+              xs: "center",
+              sm: "left",
+            }}
+          >
+            <Typography
+              variant="h3"
+              fontWeight={700}
+              color="#1A2634"
+            >
               IT Helpdesk
             </Typography>
 
-            <Typography color="text.secondary">
+            <Typography
+              color="text.secondary"
+              fontSize={16}
+            >
               Submit an IT request and monitor live ticket updates.
             </Typography>
           </Stack>
         </Stack>
 
-        {/* Dashboard Cards */}
-        <Grid container spacing={2} mb={3}>
+        {/* Dashboard */}
+
+        <Grid container spacing={2.5} mb={4}>
           {stats.map((card) => (
             <Grid
               key={card.title}
@@ -95,19 +122,17 @@ export default function PublicTicketPage() {
             >
               <Paper
                 sx={{
+                  height: 120,
                   p: 2.5,
-                  borderRadius: 1,
+                  borderRadius: 2,
                   border: "1px solid #E5E7EB",
-                  boxShadow: "none",
-                  height: 130,
+                  boxShadow: "0 2px 10px rgba(15,23,42,.05)",
                 }}
               >
                 <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    height: "100%",
-                  }}
+                  display="flex"
+                  flexDirection="column"
+                  height="100%"
                 >
                   <Chip
                     label={card.title}
@@ -117,26 +142,22 @@ export default function PublicTicketPage() {
                       bgcolor: card.bg,
                       color: card.color,
                       fontWeight: 700,
-                      borderRadius: "999px",
                     }}
                   />
 
                   <Box
-                    sx={{
-                      flex: 1,
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
+                    flex={1}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
                   >
                     <Typography
                       sx={{
-                        fontSize: 48,
+                        fontSize: 42,
                         fontWeight: 700,
-                        lineHeight: 1,
+                        color: "#1E293B",
                       }}
                     >
-                      {/* 3. The value will seamlessly jump to the new number when the background fetch completes */}
                       {isLoading ? "-" : card.value}
                     </Typography>
                   </Box>
@@ -147,39 +168,50 @@ export default function PublicTicketPage() {
         </Grid>
 
         {/* Main Content */}
+
         <Grid container spacing={3}>
-          {/* Create Ticket */}
+          {/* Form */}
+
           <Grid
             size={{
               xs: 12,
-              lg: 4,
+              md: 5,
+              lg: 3.5,
             }}
           >
             <Paper
               sx={{
-                borderRadius: 1,
                 p: 3,
-                height: 650,
-                boxShadow: "0 3px 12px rgba(0,0,0,.08)",
+                borderRadius: 2,
+                height: {
+                  xs: "auto",
+                  lg: 640,
+                },
+                boxShadow: "0 4px 14px rgba(15,23,42,.08)",
               }}
             >
               <PublicTicketForm />
             </Paper>
           </Grid>
 
-          {/* Ticket Table */}
+          {/* Table */}
+
           <Grid
             size={{
               xs: 12,
-              lg: 8,
+              md: 7,
+              lg: 8.5,
             }}
           >
             <Paper
               sx={{
-                borderRadius: 1,
                 p: 3,
-                height: 650,
-                boxShadow: "0 3px 12px rgba(0,0,0,.08)",
+                borderRadius: 2,
+                height: {
+                  xs: "auto",
+                  lg: 640,
+                },
+                boxShadow: "0 4px 14px rgba(15,23,42,.08)",
               }}
             >
               <PublicTicketTable />

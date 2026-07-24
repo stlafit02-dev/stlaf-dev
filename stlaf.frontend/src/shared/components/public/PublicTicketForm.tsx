@@ -6,15 +6,16 @@ import {
   Button,
   MenuItem,
   CircularProgress,
+  Box,
 } from "@mui/material";
 
-import { createTicket } from "../../api/ticketApi";
+import { createTicket } from "../../../departments/IT/api/ticketApi";
 import { useCategories, usePriorities } from "../../hooks/useEnums";
 import TicketSubmittedDialog from "./TicketSubmittedDialog";
 
 import { useQueryClient } from "@tanstack/react-query";
 
-import type { TicketDto } from "../../types/ticket";
+import type { TicketDto } from "../../../departments/IT/types/ticket";
 
 export default function PublicTicketForm() {
   const { data: categories = [], isLoading: loadingCategories } =
@@ -61,6 +62,7 @@ export default function PublicTicketForm() {
       });
 
       setSubmittedTicket(createdTicket);
+
       setOpenDialog(true);
 
       setForm({
@@ -83,25 +85,32 @@ export default function PublicTicketForm() {
   return (
     <>
       <Stack
-        spacing={1.5}
+        spacing={1.6}
         sx={{
-          width: "90%",
+          width: "100%",
+          maxWidth: 420,
           mx: "auto",
-          alignItems: "center",
+          height: "100%",
         }}
       >
-        <Typography
-          variant="h6"
-          fontWeight={700}
-          sx={{
-            color: "#1A2634",
-            mb: 1,
-          }}
-        >
-          Create New Ticket
-        </Typography>
+        <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mb: 1 }}>
+          <Box
+            sx={{
+              width: 5,
+              height: 28,
+              bgcolor: "#1A2364",
+              borderRadius: 999,
+            }}
+          />
+
+          <Typography variant="h5" fontWeight={700} color="#1A2634">
+            Create New Ticket
+          </Typography>
+        </Stack>
+
         <TextField
-          label="Employee Name"
+          size="small"
+          label="Full Name"
           name="name"
           value={form.name}
           onChange={handleChange}
@@ -109,26 +118,23 @@ export default function PublicTicketForm() {
         />
 
         <TextField
+          size="small"
           label="Company Email"
           name="companyEmail"
           value={form.companyEmail}
           onChange={handleChange}
-          // size="small"
           fullWidth
         />
 
         <TextField
+          size="small"
           label="Viber Number"
           name="viberNumber"
           type="tel"
-          // size="small"
-          inputProps={{
-            maxLength: 11,
-          }}
+          inputProps={{ maxLength: 11 }}
           value={form.viberNumber}
           onChange={(e) => {
             const value = e.target.value.replace(/\D/g, "");
-
             setForm((prev) => ({
               ...prev,
               viberNumber: value,
@@ -138,32 +144,27 @@ export default function PublicTicketForm() {
         />
 
         <TextField
+          size="small"
           select
           label="Department"
           name="department"
-          // size="small"
           value={form.department}
           onChange={handleChange}
           fullWidth
         >
           <MenuItem value="HumanResources">Human Resource Department</MenuItem>
-
           <MenuItem value="Litigation">Litigation Department</MenuItem>
-
           <MenuItem value="Corporate">Corporate Department</MenuItem>
-
           <MenuItem value="Accounting">Accounting Department</MenuItem>
-
           <MenuItem value="Marketing">Marketing Department</MenuItem>
-
           <MenuItem value="IT">IT Department</MenuItem>
         </TextField>
 
         <TextField
+          size="small"
           select
           label="Category"
           name="category"
-          // size="small"
           value={form.category}
           onChange={handleChange}
           fullWidth
@@ -183,10 +184,10 @@ export default function PublicTicketForm() {
         </TextField>
 
         <TextField
+          size="small"
           select
           label="Priority"
           name="priority"
-          // size="small"
           value={form.priority}
           onChange={handleChange}
           fullWidth
@@ -206,28 +207,33 @@ export default function PublicTicketForm() {
         </TextField>
 
         <TextField
+          size="small"
           label="Description"
           name="description"
-          // size="small"
           value={form.description}
           onChange={handleChange}
           multiline
-          rows={3}
+          rows={4}
           fullWidth
         />
 
         <Button
           variant="contained"
-          size="medium"
+          fullWidth
           disabled={loading}
           onClick={handleSubmit}
           sx={{
-            mt: 2.5,
-            width: "60%",
-            mx: "auto",
+            mt: 2,
+            height: 48,
             bgcolor: "#123765",
+            borderRadius: 2,
+            fontWeight: 700,
+            fontSize: 15,
+            textTransform: "none",
+            boxShadow: "none",
             "&:hover": {
-              bgcolor: "#CCAA49",
+              bgcolor: "#1A2364",
+              boxShadow: "0 4px 12px rgba(26,35,100,.25)",
             },
           }}
         >

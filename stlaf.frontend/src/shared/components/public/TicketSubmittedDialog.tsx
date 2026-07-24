@@ -7,7 +7,7 @@ import {
   Divider,
 } from "@mui/material";
 
-import type { TicketDto } from "../../types/ticket";
+import type { TicketDto } from "../../../departments/IT/types/ticket";
 
 interface Props {
   open: boolean;

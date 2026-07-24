@@ -3,17 +3,17 @@ import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import AdminLayout from "./layouts/AdminLayout";
 
-import DashboardPage from "./pages/dashboard/DashboardPage";
-import LoginPage from "./pages/auth/LoginPage";
+import DashboardPage from "./shared/pages/dashboard/DashboardPage";
+import LoginPage from "./shared/pages/auth/LoginPage";
 
-import TicketListPage from "./pages/tickets/TicketListPage";
-import CreateTicketPage from "./pages/tickets/CreateTicketPage";
-import TicketDetailsPage from "./pages/tickets/TicketDetailsPage";
-import EditTicketPage from "./pages/tickets/EditTicketPage";
-import PublicTicketPage from "./pages/public/PublicTicketPage";
-// import AssetListPage from "./pages/assets/AssetListPage";
-// import UserListPage from "./pages/users/UserListPage";
-// import SettingsPage from "./pages/settings/SettingsPage";
+import TicketListPage from "./departments/IT/pages/tickets/TicketListPage";
+import CreateTicketPage from "./departments/IT/pages/tickets/CreateTicketPage";
+import TicketDetailsPage from "./departments/IT/pages/tickets/TicketDetailsPage";
+import EditTicketPage from "./departments/IT/pages/tickets/EditTicketPage";
+import PublicTicketPage from "./shared/pages/public/PublicTicketPage";
+// import AssetListPage from "./departments/IT/pages/assets/AssetListPage";
+// import UserListPage from "./shared/pages/users/UserListPage";
+// import SettingsPage from "./shared/pages/settings/SettingsPage";
 
 function App() {
   return (

@@ -21,7 +21,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 
 import { useUpdateTicket } from "../../hooks/useUpdateTicket";
-import { useUsers } from "../../hooks/useUser";
+import { useUsers } from "../../../../shared/hooks/useUser";
 import type { TicketDto } from "../../types/ticket";
 
 interface Props {

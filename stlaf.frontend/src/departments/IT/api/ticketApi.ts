@@ -1,4 +1,4 @@
-import axios from "./axios";
+import axios from "../../../shared/api/axios";
 import type { TicketDto, TicketQuery, PaginatedResult } from "../types/ticket";
 
 export interface UpdateTicketDto {
